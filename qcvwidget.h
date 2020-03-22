@@ -29,5 +29,7 @@ signals:
 private slots:
     void receiveFrame(QImage frame);
     void receiveToggleStream();
+    void keypoints_BinaryThreshold_ToggleBinaryThreshold();
+    void keypoints_BinaryThreshold_ToggleKeypoints();
 };
 #endif // QCVWIDGET_H

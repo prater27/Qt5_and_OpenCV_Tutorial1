@@ -22,8 +22,13 @@ private:
    bool binaryTresholdEnable;
    int binaryTreshold;
 
+   bool keypointsEnable;
+   int minHessian;
+
    void checkIfDeviceAlreadyOpened(const int device);
-   void process();
+   void processBinaryThreshold();
+   void processKeypoints();
+   void greyScaleProcess();
 
 public:
     explicit OpenCVWorker(QObject *parent = nullptr);
@@ -39,6 +44,9 @@ public slots:
 
     void receiveEnableBinaryTreshold();
     void receiveBinaryTreshold(int treshold);
+
+    void receiveEnableKeypoints();
+    void receiveMinHessian(int hessian);
 };
 
 #endif // OPENCVWORKER_H
