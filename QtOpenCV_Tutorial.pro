@@ -21,6 +21,7 @@ SOURCES += \
     qcvwidget.cpp
 
 HEADERS += \
+    CvMat_QImage_conversor.h \
     opencvworker.h \
     qcvwidget.h
 

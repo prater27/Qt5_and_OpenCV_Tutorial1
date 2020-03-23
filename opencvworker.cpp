@@ -10,6 +10,8 @@
 
 #include <QDebug>
 
+#include "CvMat_QImage_conversor.h"
+
 using namespace cv::xfeatures2d;
 using namespace cv;
 
@@ -45,7 +47,8 @@ void OpenCVWorker::receiveGrabFrame()
     else if(contoursDetectionEnable) processContoursDetection();
     else greyScaleProcess();
 
-    QImage output((const unsigned char*) _frameProcessed.data, _frameProcessed.cols, _frameProcessed.rows, QImage::Format_Indexed8);
+    QImage output(ASM::cvMatToQImage(_frameProcessed));
+//    QImage output((const unsigned char*) _frameProcessed.data, _frameProcessed.cols, _frameProcessed.rows, QImage::Format_Indexed8);
 
     emit sendFrame(output);
 }
