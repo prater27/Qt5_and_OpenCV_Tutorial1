@@ -33,12 +33,19 @@ void QCvWidget::setup()
     connect(this, SIGNAL(sendSetup(int)), worker, SLOT(receiveSetup(int)));
     connect(this, SIGNAL(sendToggleStream()), worker, SLOT(receiveToggleStream()));
     connect(ui->pushButtonPlay, SIGNAL(clicked(bool)), this, SLOT(receiveToggleStream()));
+
     connect(ui->spinBoxBinaryThreshold, SIGNAL(valueChanged(int)), worker, SLOT(receiveBinaryTreshold(int)));
     connect(ui->horizontalSliderMinHessian, SIGNAL(sliderMoved(int)), worker, SLOT(receiveMinHessian(int)));
+    connect(ui->horizontalSliderContoursThreshold, SIGNAL(valueChanged(int)), worker, SLOT(receiveContoursDetectorThreshold(int)));
+
     connect(ui->checkBoxEnabledBinaryThreshold, SIGNAL(clicked(bool)), worker, SLOT(receiveEnableBinaryTreshold()));
-    connect(ui->checkBoxEnabledBinaryThreshold, SIGNAL(clicked(bool)), SLOT(keypoints_BinaryThreshold_ToggleKeypoints()));
+    connect(ui->checkBoxEnabledBinaryThreshold, SIGNAL(clicked(bool)), this, SLOT(onlyOneCheckBox_activeBinaryThreshold()));
+
     connect(ui->checkBoxEnabledKeypoints, SIGNAL(clicked(bool)), worker, SLOT(receiveEnableKeypoints()));
-    connect(ui->checkBoxEnabledKeypoints, SIGNAL(clicked(bool)), SLOT(keypoints_BinaryThreshold_ToggleBinaryThreshold()));
+    connect(ui->checkBoxEnabledKeypoints, SIGNAL(clicked(bool)), this, SLOT(onlyOneCheckBox_activeKeypoints()));
+
+    connect(ui->checkBoxEnabledContoursDetector, SIGNAL(clicked(bool)), worker, SLOT(receiveEnableContoursDetection()));
+    connect(ui->checkBoxEnabledContoursDetector, SIGNAL(clicked(bool)), this, SLOT(onlyOneCheckBox_activeContoursDetector()));
 
     connect(worker, SIGNAL(sendFrame(QImage)), this, SLOT(receiveFrame(QImage)));
 
@@ -53,7 +60,7 @@ void QCvWidget::setup()
 
 void QCvWidget::receiveFrame(QImage frame)
 {
-//    ui->labelView->setPixmap(QPixmap::fromImage(frame));
+    ui->labelView->setPixmap(QPixmap::fromImage(frame));
 }
 
 void QCvWidget::receiveToggleStream()
@@ -64,18 +71,20 @@ void QCvWidget::receiveToggleStream()
     emit sendToggleStream();
 }
 
-void QCvWidget::keypoints_BinaryThreshold_ToggleKeypoints()
+void QCvWidget::onlyOneCheckBox_activeKeypoints()
 {
-    if(ui->checkBoxEnabledKeypoints->checkState()==2)
-    {
-        ui->checkBoxEnabledKeypoints->setChecked(false);
-    }
+        ui->checkBoxEnabledBinaryThreshold->setChecked(false);
+        ui->checkBoxEnabledContoursDetector->setChecked(false);
 }
 
-void QCvWidget::keypoints_BinaryThreshold_ToggleBinaryThreshold()
+void QCvWidget::onlyOneCheckBox_activeBinaryThreshold()
 {
-    if(ui->checkBoxEnabledBinaryThreshold->checkState()==2)
-    {
-        ui->checkBoxEnabledBinaryThreshold->setChecked(false);
-    }
+    ui->checkBoxEnabledKeypoints->setChecked(false);
+    ui->checkBoxEnabledContoursDetector->setChecked(false);
+}
+
+void QCvWidget::onlyOneCheckBox_activeContoursDetector()
+{
+    ui->checkBoxEnabledBinaryThreshold->setChecked(false);
+    ui->checkBoxEnabledKeypoints->setChecked(false);
 }

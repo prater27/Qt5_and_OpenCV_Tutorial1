@@ -20,7 +20,9 @@ OpenCVWorker::OpenCVWorker(QObject *parent) :
     binaryTresholdEnable(false),
     binaryTreshold(127),
     keypointsEnable(false),
-    minHessian(50)
+    minHessian(50),
+    contoursDetectionEnable(false),
+    contoursThresh(100)
 {
     cap = new cv::VideoCapture();
 }
@@ -40,6 +42,7 @@ void OpenCVWorker::receiveGrabFrame()
 
     if(keypointsEnable) processKeypoints();
     else if(binaryTresholdEnable) processBinaryThreshold();
+    else if(contoursDetectionEnable) processContoursDetection();
     else greyScaleProcess();
 
     QImage output((const unsigned char*) _frameProcessed.data, _frameProcessed.cols, _frameProcessed.rows, QImage::Format_Indexed8);
@@ -79,6 +82,7 @@ void OpenCVWorker::receiveEnableBinaryTreshold()
 {
     binaryTresholdEnable = !binaryTresholdEnable;
     keypointsEnable = false;
+    contoursDetectionEnable = false;
 }
 
 void OpenCVWorker::receiveBinaryTreshold(int threshold)
@@ -90,11 +94,24 @@ void OpenCVWorker::receiveEnableKeypoints()
 {
     keypointsEnable = !keypointsEnable;
     binaryTresholdEnable = false;
+    contoursDetectionEnable = false;
 }
 
 void OpenCVWorker::receiveMinHessian(int hessian)
 {
     minHessian=hessian;
+}
+
+void OpenCVWorker::receiveEnableContoursDetection()
+{
+    contoursDetectionEnable = !contoursDetectionEnable;
+    keypointsEnable = false;
+    binaryTresholdEnable = false;
+}
+
+void OpenCVWorker::receiveContoursDetectorThreshold(int contoursThreshold)
+{
+    contoursThresh = contoursThreshold;
 }
 
 void OpenCVWorker::processKeypoints()
@@ -117,5 +134,25 @@ void OpenCVWorker::greyScaleProcess()
     cv::cvtColor(_frameOriginal, _frameProcessed, cv::COLOR_BGR2GRAY);
 }
 
+void OpenCVWorker::processContoursDetection()
+{
+    cv::cvtColor(_frameOriginal, _frameProcessed, cv::COLOR_BGR2GRAY);
+    Mat canny_output;
+    cv::Canny( _frameProcessed, canny_output, contoursThresh, contoursThresh*2 );
+    std::vector<std::vector<Point> > contours;
+    std::vector<Vec4i> hierarchy;
+    findContours( canny_output, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE );
+    Mat drawing = Mat::zeros( canny_output.size(), CV_8UC3 );
+
+    RNG rng(12345);
+
+    for( size_t i = 0; i< contours.size(); i++ )
+    {
+        Scalar color = Scalar( rng.uniform(0, 256), rng.uniform(0,256), rng.uniform(0,256) );
+        drawContours( drawing, contours, (int)i, color, 2, LINE_8, hierarchy, 0 );
+    }
+
+    _frameProcessed=drawing;
+}
 
 #endif

@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>913</width>
-    <height>624</height>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QLabel" name="labelView">
@@ -49,14 +49,76 @@
       </spacer>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>GroupBox</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Contours Threshold</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="horizontalSliderContoursThreshold">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="value">
+             <number>99</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBoxEnabledContoursDetector">
+            <property name="text">
+             <string>Contours Enabled</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButtonPlay">
+          <property name="text">
+           <string>&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QPushButton" name="pushButtonPlay">
-         <property name="text">
-          <string>&gt;</string>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="sizePolicy">
@@ -66,13 +128,13 @@
           </sizepolicy>
          </property>
          <property name="title">
-          <string>Keypoints Hessian</string>
+          <string>Keypoints</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignHCenter|Qt::AlignTop</set>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="1">
+          <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QLabel" name="label">
@@ -100,27 +162,11 @@
             <item>
              <widget class="QCheckBox" name="checkBoxEnabledKeypoints">
               <property name="text">
-               <string>Keypoints</string>
+               <string>Keypoints Enabled</string>
               </property>
              </widget>
             </item>
            </layout>
-          </item>
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::MinimumExpanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
@@ -184,7 +230,7 @@
             <item>
              <widget class="QCheckBox" name="checkBoxEnabledBinaryThreshold">
               <property name="text">
-               <string>Enabled</string>
+               <string>Threshold Enabled</string>
               </property>
              </widget>
             </item>

@@ -25,10 +25,14 @@ private:
    bool keypointsEnable;
    int minHessian;
 
+   bool contoursDetectionEnable;
+   int contoursThresh;
+
    void checkIfDeviceAlreadyOpened(const int device);
    void processBinaryThreshold();
    void processKeypoints();
    void greyScaleProcess();
+   void processContoursDetection();
 
 public:
     explicit OpenCVWorker(QObject *parent = nullptr);
@@ -47,6 +51,9 @@ public slots:
 
     void receiveEnableKeypoints();
     void receiveMinHessian(int hessian);
+
+    void receiveEnableContoursDetection();
+    void receiveContoursDetectorThreshold(int contourThreshold);
 };
 
 #endif // OPENCVWORKER_H
